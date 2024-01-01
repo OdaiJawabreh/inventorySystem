@@ -16,11 +16,11 @@ import {
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
-import { useRouter } from "next/router";
 import PermIdentityRoundedIcon from "@mui/icons-material/PermIdentityRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import ReceiptLongSharpIcon from "@mui/icons-material/ReceiptLongSharp";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useRouter } from "next/router";
 
 const settings = [
   {
@@ -63,7 +63,7 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [openLogOut, setOpenLogOut] = useState(false);
-
+  const router = useRouter();
   // ----------------- Methods ----------------------------
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -71,9 +71,10 @@ function ResponsiveAppBar() {
   const clickOnItem = (item) => {
     setAnchorElUser(null);
     if (item === "My Transaction") {
-      console.log(item);
+      router.push('/transactions')
     } else if (item === "Log out") {
-      console.log(item);
+      localStorage.removeItem("token")
+      router.push('/login')
     }
   };
   const handleScroll = () => {
@@ -121,6 +122,7 @@ function ResponsiveAppBar() {
                     overlap="circular"
                     anchorOrigin={{ vertical: "top", horizontal: "right" }}
                     badgeContent={5}
+                    onClick={()=>{router.push('/cartDetails')}}
                   >
                       <ShoppingCartIcon sx={{color:"green", fontSize: "35px"}} />
                   </Badge>

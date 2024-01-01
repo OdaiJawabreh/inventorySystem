@@ -1,9 +1,9 @@
-import Button from "@mui/material/Button";
 import ProtectedRoute from "../src/ProtectedRoute";
+import Products from "../src/Home/Product"
 function Home() {
   return (
-    <ProtectedRoute checkedRole={"admin"}>
-      <Button variant="contained">Hello world</Button>
+    <ProtectedRoute >
+      <Products/>
     </ProtectedRoute>
   );
 }
