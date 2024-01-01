@@ -14,6 +14,21 @@ const creteNewUser = async (userDTO) => {
   }
 };
 
+const login = async (loginDto) => {
+  try {
+    const { data } = await requestBuilder({
+      path: `auth/login`,
+      method: "POST",
+      data: loginDto
+    });
+    return data;
+  } catch (error) {
+    console.log("error get getAllUsers ", error.message);
+    throw error;
+  }
+}
+
 module.exports = {
     creteNewUser,
+    login
   };

@@ -15,13 +15,13 @@ import {
   Grid,
   DialogActions,
   Button,
+  Alert
 } from "@mui/material";
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import { creteNewUser } from "./services";
-import Alert from '@mui/material/Alert';
 const CustomTextField = styled(TextField)({
   backgroundColor: "#fafafa",
 });
@@ -177,7 +177,7 @@ function SignUp({
               helperText={passwordError && passwordError}
             />
           </Grid>
-          {true && (
+          {error && (
             <Alert variant="filled" severity="error" sx={{ marginTop: "15px" }}>
               {error}
             </Alert>

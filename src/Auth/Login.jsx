@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   FormControlLabel,
@@ -14,12 +14,18 @@ import {
   InputAdornment,
   IconButton,
   Button,
+  Alert,
 } from "@mui/material";
 import { Clear, Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import SignUp from "./SignUp";
+import { login } from "./services";
+import { useRouter } from "next/router";
+
 
 function Login() {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -30,6 +36,7 @@ function Login() {
   const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);
   const [role, setRole] = useState("member");
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   const handleEmailChange = (event) => {
     const email = event.target.value;
@@ -41,22 +48,59 @@ function Login() {
   };
   const rememberMe = () => {
     setIsRememberMeChecked(!isRememberMeChecked);
-    if (!isRememberMeChecked) {
-      const savedCredentials = JSON.stringify({
-        email: email,
-        password: password,
-        isRememberMeChecked: !isRememberMeChecked,
-      });
-      localStorage.setItem("savedCredentials", savedCredentials);
-    } else {
-      localStorage.removeItem("savedCredentials");
-    }
   };
-  const handleSubmit = () => {
-    console.log("dd");
+  const getValidation = () => {
+    let flag = true;
+    if (
+      !email ||
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
+    ) {
+      flag = false;
+      setEmailError("Sorry, email is required, And should be valid");
+    } else setEmailError("");
+    if (!password.trim("") || password.trim("").length < 7) {
+      flag = false;
+      setPasswordError("Sorry, passord is required And at least 7 charecter");
+    } else setPasswordError("");
+    return flag;
+  };
+  const handleSubmit = async () => {
+    const validation = getValidation();
+    if (!validation) return;
+    try {
+      setIsLoading(true);
+      const loginDto = { email, password };
+      const {accessToken} = await login(loginDto);
+      localStorage.setItem("token", JSON.stringify(accessToken));
+      router.push('/')
+      setError("");
+      if (isRememberMeChecked) {
+        const savedCredentials = JSON.stringify({
+          email: email,
+          password: isRememberMeChecked ? password : "",
+          isRememberMeChecked: isRememberMeChecked,
+        });
+        localStorage.setItem("savedCredentials", savedCredentials);
+      }
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
   const onClose = () => setOpen(false);
 
+  useEffect(() => {
+    const savedCredentials = JSON.parse(
+      localStorage.getItem("savedCredentials")
+    );
+    if (savedCredentials && savedCredentials.isRememberMeChecked) {
+      setEmail(savedCredentials.email);
+      setPassword(savedCredentials.password);
+      setIsRememberMeChecked(savedCredentials.isRememberMeChecked);
+    }
+  }, []);
   return (
     <div
       style={{
@@ -199,6 +243,15 @@ function Login() {
                   />
                 </Grid>
               </Grid>
+              {error && (
+                <Alert
+                  variant="filled"
+                  severity="error"
+                  sx={{ marginTop: "15px" }}
+                >
+                  {error}
+                </Alert>
+              )}
               <LoadingButton
                 size="large"
                 variant="contained"
@@ -213,6 +266,7 @@ function Login() {
                   },
                 }}
                 loading={isLoading}
+                onClick={handleSubmit}
               >
                 Sign In
               </LoadingButton>
@@ -233,7 +287,7 @@ function Login() {
                 onClick={() => {
                   setName("");
                   setPassword("");
-                  setEmail("")
+                  setEmail("");
                   setOpen(true);
                 }}
                 sx={{
