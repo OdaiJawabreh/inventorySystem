@@ -21,7 +21,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ReceiptLongSharpIcon from "@mui/icons-material/ReceiptLongSharp";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useRouter } from "next/router";
-
+import Logo from "../../static/nard_1.png"
+import { RotateRight } from "@mui/icons-material";
 const settings = [
   {
     name: "My Transaction",
@@ -112,7 +113,12 @@ function ResponsiveAppBar() {
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box sx={{ flexFlow: 1 }}></Box>
               <CenteredLogoContainer>
-                <div>soosososo</div>
+              <img
+              onClick={()=>{router.push("/")}}
+              src="https://media.licdn.com/dms/image/D4D0BAQG5G2eWQn4Ybg/company-logo_200_200/0/1681635517512/nardpos_logo?e=2147483647&v=beta&t=-RK4XaNrylazkgh0w1jAZLpZTrGbj_KI4LL-xcCv0N4"// Replace with the actual path to your logo
+              alt="Logo"
+              style={{ width: '70px', height: '70px', cursor:"pointer" }} // Adjust the width and margin as needed
+            />
               </CenteredLogoContainer>
 
               <Box display="flex" alignItems="center" gap={1}>
@@ -124,7 +130,7 @@ function ResponsiveAppBar() {
                     badgeContent={5}
                     onClick={()=>{router.push('/cartDetails')}}
                   >
-                      <ShoppingCartIcon sx={{color:"green", fontSize: "35px"}} />
+                      <ShoppingCartIcon sx={{color:"green", fontSize: "35px", cursor: "pointer"}} />
                   </Badge>
                 </Tooltip>
                 <Typography variant="body1" component="span">
@@ -175,8 +181,6 @@ function ResponsiveAppBar() {
         </Toolbar>
       </AppBar>
 
-      {/* {open && <ChangePassword onClose={onClose} open={open} />}
-      {openLogOut && <LogOut onClose={onCloseLogOut} open={openLogOut} />} */}
     </div>
   );
 }
