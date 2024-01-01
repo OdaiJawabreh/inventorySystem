@@ -1,0 +1,24 @@
+.app_container {
+    background: #fafafa;
+    min-height: 100vh;
+  }
+  
+  .loader {
+    width: max-content;
+    min-height: 100vh;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .container_padding {
+    padding-left: 40px;
+  }
+  
+  @media (max-width: 1000px) {
+    .container_padding {
+      padding-left: 0; /* Set padding to 0 when viewport width is under 900px */
+    }
+  }
+  

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   styled,
-  MuiAppBar,
   Menu,
   Container,
   Avatar,
@@ -15,59 +14,24 @@ import {
   ListItemIcon,
   ListItemButton,
 } from "@mui/material";
-import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
-import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
+import MuiAppBar from "@mui/material/AppBar";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
-import SwitchClient from "../SwitchClient/index";
-import ChangePassword from "./../Ciam/ChangePassword/ChangePassword";
-import LogOut from "./../Ciam/LogOut/LogOut";
 import { useRouter } from "next/router";
 import PermIdentityRoundedIcon from "@mui/icons-material/PermIdentityRounded";
 import MenuIcon from "@mui/icons-material/Menu";
+import ReceiptLongSharpIcon from "@mui/icons-material/ReceiptLongSharp";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const settings = [
   {
-    name: "My Profile",
-    icon: <PersonOutlineTwoToneIcon />,
-  },
-  {
-    name: "Change Password",
-    icon: <LockOpenTwoToneIcon />,
+    name: "My Transaction",
+    icon: <ReceiptLongSharpIcon />,
   },
   {
     name: "Log out",
     icon: <LogoutTwoToneIcon />,
   },
 ];
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -93,50 +57,23 @@ const CenteredLogoContainer = styled(Box)({
   alignItems: "center",
 });
 
-function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
+function ResponsiveAppBar() {
   // ----------------------- State -------------------------
   const [scrolled, setScrolled] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [open, setOpen] = useState(false);
+  const [openLogOut, setOpenLogOut] = useState(false);
 
-
-  const router = useRouter();
   // ----------------- Methods ----------------------------
-
-  const onClose = () => {
-    setOpen(false);
-  };
-  const onCloseLogOut = () => {
-    setOpenLogOut(false);
-  };
-  const stringToColor = (string) => {
-    let hash = 0;
-    let i;
-
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let color = "#";
-
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-
-    return color;
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
   const clickOnItem = (item) => {
     setAnchorElUser(null);
-    if (item === "Change Password") {
-      setOpen(true);
+    if (item === "My Transaction") {
+      console.log(item);
     } else if (item === "Log out") {
-      setOpenLogOut(true);
-    } else {
-      router.push("/ProfilePage");
+      console.log(item);
     }
   };
   const handleScroll = () => {
@@ -146,33 +83,7 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
       setScrolled(false);
     }
   };
-  const handelOpenClick = () => {
-    setSwitchClientFlag(true);
-  };
-  const handelCloseClick = () => {
-    setSwitchClientFlag(false);
-  };
-//   const checkActiveClient = () => {
-//     const activeClient = localStorage.getItem("activeClient");
-//     const activeClientData = JSON.parse(activeClient);
 
-//     if (!activeClientData) {
-//       return setSwitchClientFlag(true);
-//     } else {
-//       const clientsId = clientsCont.map((ele) => ele.id);
-//       if (!clientsId.includes(activeClientData.id)) {
-//         localStorage.setItem("activeClient", null);
-//         dispatch(setActiveClient(null));
-//         return setSwitchClientFlag(true);
-//       }
-
-//       dispatch(setActiveClient(activeClientData));
-//     }
-//   };
-
-  const handleDrawerOpen = () => {
-    setOpenDrawer(() => !openDrawer);
-  };
   // ------------------- use Effect ----------------------
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -180,10 +91,6 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [scrolled]);
-
-//   useEffect(() => {
-//     checkActiveClient();
-//   }, [clientsCont]);
 
   return (
     <div>
@@ -199,16 +106,7 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
           disableGutters
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Box sx={{ flexFlow: 1 }}>
-            <IconButton
-              size="large"
-              color="black"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
+
           <Container maxWidth="xl">
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box sx={{ flexFlow: 1 }}></Box>
@@ -216,22 +114,67 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
                 <div>soosososo</div>
               </CenteredLogoContainer>
 
-              {leftSide(
-                stringToColor,
-                handleOpenUserMenu,
-                setAnchorElUser,
-                clickOnItem,
-                handelOpenClick,
-              )}
+              <Box display="flex" alignItems="center" gap={1}>
+                <Tooltip arrow={true} title="Shopping Cart">
+                  <Badge
+                    color="primary"
+                    overlap="circular"
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    badgeContent={5}
+                  >
+                      <ShoppingCartIcon sx={{color:"green", fontSize: "35px"}} />
+                  </Badge>
+                </Tooltip>
+                <Typography variant="body1" component="span">
+        |
+      </Typography>
+      <Tooltip arrow={true} title="Profile setting">
+        <ListItemButton disableGutters={true} onClick={handleOpenUserMenu}>
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              justifyContent: "center",
+              border: "1px solid darkgreen",
+              borderRadius: "50%",
+              padding: "10px",
+              color: anchorElUser && "green",
+            }}
+          >
+            <PermIdentityRoundedIcon />
+          </ListItemIcon>
+        </ListItemButton>
+      </Tooltip>
+      <Menu
+        sx={{ mt: "45px" }}
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        open={Boolean(anchorElUser)}
+        onClose={() => setAnchorElUser(null)}
+      >
+        {settings.map((setting, index) => (
+          <MenuItem key={index} onClick={() => clickOnItem(setting.name)}>
+            <ListItemIcon>{setting.icon}</ListItemIcon>
+            <Typography textAlign="center">{setting.name}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
+              </Box>
             </Box>
           </Container>
         </Toolbar>
       </AppBar>
-      {switchClientFlag && (
-        <SwitchClient flag={switchClientFlag} close={handelCloseClick} />
-      )}
-      {open && <ChangePassword onClose={onClose} open={open} />}
-      {openLogOut && <LogOut onClose={onCloseLogOut} open={openLogOut} />}
+
+      {/* {open && <ChangePassword onClose={onClose} open={open} />}
+      {openLogOut && <LogOut onClose={onCloseLogOut} open={openLogOut} />} */}
     </div>
   );
 }
@@ -239,20 +182,17 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
 export default ResponsiveAppBar;
 
 const leftSide = (
-  clientsCont,
-  stringToColor,
   handleOpenUserMenu,
   anchorElUser,
   setAnchorElUser,
   clickOnItem,
-  handelOpenClick,
   activeClient
 ) => {
   return (
     <Box display="flex" alignItems="center" gap={1}>
       {/* Avatar */}
       {activeClient && (
-        <Tooltip arrow={true} title={'hhhhhhh'}>
+        <Tooltip arrow={true} title={"hhhhhhh"}>
           <Badge
             color="primary"
             overlap="circular"
@@ -294,10 +234,10 @@ const leftSide = (
             sx={{
               minWidth: 0,
               justifyContent: "center",
-              border: "1px solid #F7B958",
+              border: "1px solid darkgreen",
               borderRadius: "50%",
               padding: "10px",
-              backgroundColor: anchorElUser && "#F7B958",
+              color: anchorElUser && "green",
             }}
           >
             <PermIdentityRoundedIcon />

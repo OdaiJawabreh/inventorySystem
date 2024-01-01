@@ -105,7 +105,7 @@ function Login() {
     <div
       style={{
         backgroundImage:
-          'url("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+          'url("https://media.licdn.com/dms/image/D4D22AQFJlxd9JiLi6w/feedshare-shrink_1280/0/1692604721762?e=1706745600&v=beta&t=zp4Rdn6HNymfp4nFqKy8yKyrREtqG1_HGyXdrgu1NGA")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         display: "flex",
