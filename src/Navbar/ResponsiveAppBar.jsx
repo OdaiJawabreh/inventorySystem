@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   styled,
-  MuiAppBar,
   Menu,
   Container,
   Avatar,
@@ -15,24 +14,17 @@ import {
   ListItemIcon,
   ListItemButton,
 } from "@mui/material";
-import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
-import LockOpenTwoToneIcon from "@mui/icons-material/LockOpenTwoTone";
+import MuiAppBar from "@mui/material/AppBar";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
-import SwitchClient from "../SwitchClient/index";
-import ChangePassword from "./../Ciam/ChangePassword/ChangePassword";
-import LogOut from "./../Ciam/LogOut/LogOut";
 import { useRouter } from "next/router";
 import PermIdentityRoundedIcon from "@mui/icons-material/PermIdentityRounded";
 import MenuIcon from "@mui/icons-material/Menu";
+import ReceiptLongSharpIcon from '@mui/icons-material/ReceiptLongSharp';
 
 const settings = [
   {
-    name: "My Profile",
-    icon: <PersonOutlineTwoToneIcon />,
-  },
-  {
-    name: "Change Password",
-    icon: <LockOpenTwoToneIcon />,
+    name: "My Transaction",
+    icon: <ReceiptLongSharpIcon />,
   },
   {
     name: "Log out",
@@ -98,46 +90,20 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
   const [scrolled, setScrolled] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [open, setOpen] = useState(false);
+  const [openLogOut, setOpenLogOut] = useState(false)
 
 
-  const router = useRouter();
   // ----------------- Methods ----------------------------
-
-  const onClose = () => {
-    setOpen(false);
-  };
-  const onCloseLogOut = () => {
-    setOpenLogOut(false);
-  };
-  const stringToColor = (string) => {
-    let hash = 0;
-    let i;
-
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let color = "#";
-
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-
-    return color;
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
   const clickOnItem = (item) => {
     setAnchorElUser(null);
-    if (item === "Change Password") {
-      setOpen(true);
+    if (item === "My Transaction") {
+      console.log(item);
     } else if (item === "Log out") {
-      setOpenLogOut(true);
-    } else {
-      router.push("/ProfilePage");
-    }
+        console.log(item);
+    } 
   };
   const handleScroll = () => {
     if (window.scrollY > 0 && !scrolled) {
@@ -145,31 +111,7 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
     } else if (window.scrollY === 0 && scrolled) {
       setScrolled(false);
     }
-  };
-  const handelOpenClick = () => {
-    setSwitchClientFlag(true);
-  };
-  const handelCloseClick = () => {
-    setSwitchClientFlag(false);
-  };
-//   const checkActiveClient = () => {
-//     const activeClient = localStorage.getItem("activeClient");
-//     const activeClientData = JSON.parse(activeClient);
-
-//     if (!activeClientData) {
-//       return setSwitchClientFlag(true);
-//     } else {
-//       const clientsId = clientsCont.map((ele) => ele.id);
-//       if (!clientsId.includes(activeClientData.id)) {
-//         localStorage.setItem("activeClient", null);
-//         dispatch(setActiveClient(null));
-//         return setSwitchClientFlag(true);
-//       }
-
-//       dispatch(setActiveClient(activeClientData));
-//     }
-//   };
-
+  }
   const handleDrawerOpen = () => {
     setOpenDrawer(() => !openDrawer);
   };
@@ -221,17 +163,14 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
                 handleOpenUserMenu,
                 setAnchorElUser,
                 clickOnItem,
-                handelOpenClick,
               )}
             </Box>
           </Container>
         </Toolbar>
       </AppBar>
-      {switchClientFlag && (
-        <SwitchClient flag={switchClientFlag} close={handelCloseClick} />
-      )}
-      {open && <ChangePassword onClose={onClose} open={open} />}
-      {openLogOut && <LogOut onClose={onCloseLogOut} open={openLogOut} />}
+
+      {/* {open && <ChangePassword onClose={onClose} open={open} />}
+      {openLogOut && <LogOut onClose={onCloseLogOut} open={openLogOut} />} */}
     </div>
   );
 }
@@ -239,13 +178,10 @@ function ResponsiveAppBar({ openDrawer, setOpenDrawer }) {
 export default ResponsiveAppBar;
 
 const leftSide = (
-  clientsCont,
-  stringToColor,
   handleOpenUserMenu,
   anchorElUser,
   setAnchorElUser,
   clickOnItem,
-  handelOpenClick,
   activeClient
 ) => {
   return (

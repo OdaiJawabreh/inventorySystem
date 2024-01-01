@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   styled,
   Box,
-  MuiDrawer,
   List,
   CssBaseline,
   Typography,
@@ -12,14 +11,16 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-} from "@mui/material/styles";
+} from "@mui/material";
+import MuiDrawer from "@mui/material/Drawer";
+import MenuIcon from "@mui/icons-material/Menu";
+
 import { useRouter } from "next/router";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
-import { useSelector, useDispatch } from "react-redux";
 import styles from "./Style.module.css";
 const drawerWidth = 240;
 
