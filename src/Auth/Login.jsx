@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { Clear, Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
+import SignUp from "./SignUp";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,8 +26,10 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
-  const [signUp, setSignUp] = useState(false);
+  const [open, setOpen] = useState(false);
   const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);
+  const [role, setRole] = useState("member");
+  const [name, setName] = useState("");
 
   const handleEmailChange = (event) => {
     const email = event.target.value;
@@ -52,6 +55,7 @@ function Login() {
   const handleSubmit = () => {
     console.log("dd");
   };
+  const onClose = () => setOpen(false);
 
   return (
     <div
@@ -196,7 +200,6 @@ function Login() {
                 </Grid>
               </Grid>
               <LoadingButton
-                type="submit"
                 size="large"
                 variant="contained"
                 sx={{
@@ -228,7 +231,10 @@ function Login() {
                 size="large"
                 variant="contained"
                 onClick={() => {
-                  console.log("l");
+                  setName("");
+                  setPassword("");
+                  setEmail("")
+                  setOpen(true);
                 }}
                 sx={{
                   textTransform: "capitalize",
@@ -244,6 +250,20 @@ function Login() {
           </Box>
         </Box>
       </Container>
+      {open && (
+        <SignUp
+          open={open}
+          onClose={onClose}
+          role={role}
+          setRole={setRole}
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+        />
+      )}
     </div>
   );
 }
