@@ -12,11 +12,25 @@ const getProducts = async ({ name, minPrice, maxPrice }) => {
     });
     return data;
   } catch (error) {
-    console.log("error get getAllUsers ", error.message);
+    console.log("error get getProducts ", error.message);
     throw error;
   }
 };
+const createProduct = async (createProductDto) => {
+  try {
+    const { data } = await requestBuilder({
+      path:`product`,
+      method:'POST',
+      data:createProductDto
+    });
+    return data;
+  } catch (error) {
+    console.log("error get createProduct ", error.message);
+    throw error;
+  }
+}
 
 module.exports = {
   getProducts,
+  createProduct
 };

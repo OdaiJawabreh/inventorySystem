@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Grid, TextField, Button, styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-// import CreateUser from "../Create/CreateUser"
+import CreateProduct from "../Create/CreateProduct"
 // ===================== Support Function
 const CustomButton = styled(Button)(({ theme }) => ({
   backgroundColor: "green",
@@ -74,7 +74,7 @@ function Header({
       </Grid>
     </Grid>
 
-    {/* {open && <CreateUser copyFullUsers={copyFullUsers} open={open} onClose={onClose}  clients={clients} updateUsers={updateUsers}/>} */}
+    {open && <CreateProduct copyFullProducts={copyFullProducts} open={open} onClose={onClose}   updateProducts={updateProducts}/>}
   </Box>
   )
 }
