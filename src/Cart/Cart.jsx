@@ -56,7 +56,7 @@ function Cart() {
     setLoading(false)
     dispatch(setEmptyCartItem())
     Swal.fire('Paymet Completed Succssfully')
-    router.push("/")
+    router.push("/transactions")
    } catch (error) {
     console.log(error);
    }finally {
