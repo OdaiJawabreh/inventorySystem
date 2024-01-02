@@ -17,6 +17,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateProduct from "../Update/UpdateProduct";
+import {deleteProduct} from "../services"
+import Swal from "sweetalert2";
 
 function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
   const [open, setOpen] = useState(false);
@@ -32,8 +34,18 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
   };
 
 
-  const handleDelete = (productId) => {
-    // Implement delete logic
+  const handleDelete = async (product) => {
+    const confirm = await Swal.fire({
+      title: `Are you sure to Delete Product ${product.name}?`,
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+    });  
+    if (confirm.isConfirmed) {
+      await deleteProduct(product.id);
+      const newProuts = copyFullProducts.filter(el => el.id !== product.id)
+      updateProducts(newProuts)
+    }
   };
 
   const handleAddToCart = (productId) => {
@@ -199,7 +211,7 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                       >
                         <IconButton
                           sx={{ color: "#f0564e" }}
-                          onClick={() => handleDelete(product.id)}
+                          onClick={() => handleDelete(product)}
                         >
                           <DeleteIcon />
                         </IconButton>
