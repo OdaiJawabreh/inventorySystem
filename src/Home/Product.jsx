@@ -37,10 +37,10 @@ function Product() {
       const response = await getProducts({...filter});
       setProducts(response.slice(0, 8));
       setPages(Math.ceil(response.length / 8));
+      return response
     };
     const resetSearch= () =>{
-      console.log("copyFullProducts", copyFullProducts.length);
-      setProducts([...copyFullProducts])
+      setProducts(copyFullProducts.slice(0, 8));
       setPages(Math.ceil(copyFullProducts.length / 8));
       setPage(1)
     }
@@ -57,8 +57,8 @@ function Product() {
       n = n * 8;
       setProducts(users.slice(n, n + 8));
     };
-    const changePage = (currentPage) => {
-      const filteredData = changeFilterValue();
+    const changePage = async (currentPage) => {
+      const filteredData = await changeFilterValue();
       setPage(currentPage);
       let n = currentPage - 1;
       n = n * 8;
@@ -92,6 +92,11 @@ function Product() {
             <TableView products={products}   updateProducts={updateProducts} copyFullProducts={copyFullProducts} />
           )}
       </Grid>
+      {products.length && (
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+            <Pagination page={page} pages={pages} changePage={changePage} />
+          </Grid>
+        )}
       </Grid>
 
     </Box>
