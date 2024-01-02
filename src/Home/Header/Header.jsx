@@ -3,6 +3,8 @@ import { Box, Grid, TextField, Button, styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import CreateProduct from "../Create/CreateProduct"
+import jwtDecode from 'jwt-decode';
+
 // ===================== Support Function
 const CustomButton = styled(Button)(({ theme }) => ({
   backgroundColor: "green",
@@ -20,6 +22,8 @@ function Header({
   updateProducts,
   copyFullProducts,
 }) {
+  const token = localStorage.getItem("token");
+  const {role} = jwtDecode(token);
   // ================== State
   const [open, setOpen] = useState(false);
   // ================= Methods
@@ -68,9 +72,9 @@ function Header({
 
       {/* Third item */}
       <Grid item xs={12} sm={3} display="flex" justifyContent="end" alignItems="center">
-        <CustomButton variant="contained" endIcon={<AddIcon />} size="large" onClick={()=> {setOpen(true)}}>
+        {role == 'admin' &&<CustomButton variant="contained" endIcon={<AddIcon />} size="large" onClick={()=> {setOpen(true)}}>
           Add Product
-        </CustomButton>
+        </CustomButton>}
       </Grid>
     </Grid>
 

@@ -14,9 +14,12 @@ import {deleteProduct} from "../services"
 import Swal from "sweetalert2";
 import {  useDispatch } from "react-redux";
 import { setCartItem } from "../../Store/productStore";
+import jwtDecode from 'jwt-decode';
 
 
 function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
+  const token = localStorage.getItem("token");
+  const {role} = jwtDecode(token);
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -91,7 +94,7 @@ function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
                     disabled={product.stockQuantity < 1}                  >
                     <AddShoppingCartIcon /> {product.stockQuantity < 1 ? 'Out Of Stock': 'Add to Cart'} 
                   </Button>
-                  <div>
+                 {role== 'admin' && <div>
                     <IconButton
                       sx={{ color: "#222656" }}
                       onClick={() => handleUpdate(product)}
@@ -104,7 +107,7 @@ function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </div>
+                  </div>} 
                 </div>
               </CardContent>
             </Card>
