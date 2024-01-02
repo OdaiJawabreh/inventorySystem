@@ -1,5 +1,6 @@
-import React from "react";
+import React , {useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
+import jwtDecode from 'jwt-decode';
 import {
   Avatar,
   Card,
@@ -18,11 +19,18 @@ import {
 import { LoadingButton } from "@mui/lab";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { setDeleteFromCart } from "../Store/productStore";
+import Swal from "sweetalert2"
+import {craeteTransaction} from "../Home/services"
+import { useRouter } from "next/router";
+import {setEmptyCartItem} from "../Store/productStore"
 
 function Cart() {
   const dispatch = useDispatch();
+  const router = useRouter()
   const { cartItem } = useSelector((state) => state.productStore);
   
+  const[loading, setLoading] = useState(false)
+
   const onDelete = (product) => {
     dispatch(setDeleteFromCart(product));
   };
@@ -32,6 +40,29 @@ function Cart() {
       return acc + productPrice;
     }, 0);
   };
+
+  const handleSubmit = async () => {
+   if(cartItem.length === 0) return Swal.fire('No Items Inside the cart')
+   try {
+    setLoading(true)
+    const token = localStorage.getItem("token");
+    const {id} = jwtDecode(token);
+    const transactinDto = {
+      totalAmount : total(),
+      userId: id,
+      products: cartItem
+    }
+    await craeteTransaction(transactinDto)
+    setLoading(false)
+    dispatch(setEmptyCartItem())
+    Swal.fire('Paymet Completed Succssfully')
+    router.push("/")
+   } catch (error) {
+    console.log(error);
+   }finally {
+    setLoading(false)
+   }
+  }
   return (
     <Box
       sx={{
@@ -95,8 +126,8 @@ function Cart() {
                     backgroundColor: "gray",
                   },
                 }}
-                // loading={isLoading}
-                // onClick={handleSubmit}
+                loading={loading}
+                onClick={handleSubmit}
               >
                 Checkout Now
               </LoadingButton>

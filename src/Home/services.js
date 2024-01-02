@@ -66,9 +66,24 @@ const deleteProduct = async (id) => {
   }
 };
 
+const craeteTransaction = async (transactionDto) => {
+  try {
+    const { data } = await requestBuilder({
+      path: `transaction`,
+      method: "POST",
+      data: transactionDto
+    });
+    return data;
+  } catch (error) {
+    console.log("error get craeteTransaction ", error.message);
+    throw error;
+  }
+}
+
 module.exports = {
   getProducts,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  craeteTransaction
 };
