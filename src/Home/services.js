@@ -80,10 +80,25 @@ const craeteTransaction = async (transactionDto) => {
   }
 }
 
+const getTransactions = async (userId) => {
+  try {
+    const { data } = await requestBuilder({
+      path: `transaction/${userId}`,
+    });
+    console.log("data", data);
+    console.log("path",`transaction/${userId}`);
+    return data;
+  } catch (error) {
+    console.log("error get getTransactions ", error.message);
+    throw error;
+  }
+}
+
 module.exports = {
   getProducts,
   createProduct,
   updateProduct,
   deleteProduct,
-  craeteTransaction
+  craeteTransaction,
+  getTransactions
 };
