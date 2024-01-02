@@ -30,7 +30,7 @@ const settings = [
   },
 ];
 import {  useSelector } from "react-redux";
-
+import Swal from "sweetalert2"
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -74,8 +74,17 @@ function ResponsiveAppBar() {
     if (item === "My Transaction") {
       router.push('/transactions')
     } else if (item === "Log out") {
-      localStorage.removeItem("token")
-      router.push('/login')
+      const confirm =  Swal.fire({
+        title: `Are you sure you Want to Log out?`,
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+      });  
+      if (confirm.isConfirmed) { 
+        localStorage.removeItem("token")
+        router.push('/login')
+      }
+
     }
   };
   const handleScroll = () => {
