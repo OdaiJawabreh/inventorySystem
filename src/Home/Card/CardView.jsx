@@ -12,8 +12,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import UpdateProduct from "../Update/UpdateProduct";
 import {deleteProduct} from "../services"
 import Swal from "sweetalert2";
+import {  useDispatch } from "react-redux";
+import { setCartItem } from "../../Store/productStore";
+
 
 function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
 
@@ -40,8 +45,17 @@ function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
     }
   };
 
-  const handleAddToCart = (productId) => {
-    // Implement add to cart logic
+  const handleAddToCart = (product) => {
+    dispatch(setCartItem(product))
+    const updateStock = {
+      ...product,
+      stockQuantity : product.stockQuantity -1 
+    }
+    const products = copyFullProducts.map((el)=>{
+      if(el.id === product.id) return updateStock
+      else return el
+    })
+    updateProducts(products)
   };
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
@@ -73,8 +87,9 @@ function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
                       borderColor: "#222656",
                     }}
                     variant="outlined"
-                  >
-                    <AddShoppingCartIcon /> Add to Cart
+                    onClick={()=>{handleAddToCart(product)}}
+                    disabled={product.stockQuantity < 1}                  >
+                    <AddShoppingCartIcon /> {product.stockQuantity < 1 ? 'Out Of Stock': 'Add to Cart'} 
                   </Button>
                   <div>
                     <IconButton
