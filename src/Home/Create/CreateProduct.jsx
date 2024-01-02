@@ -76,7 +76,6 @@ function CreateProduct({ copyFullProducts, open, onClose, updateProducts }) {
         stockQuantity: +stockQuantity,
       };
       const response = await createProduct(productDto);
-      console.log("response", response);
       updateProducts([...copyFullProducts, response]);
 
       setTimeout(() => {

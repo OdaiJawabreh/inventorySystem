@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,12 +9,19 @@ import {
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import productStore from "@/Store/productStore";
-// import { DeleteIcon, EditIcon, AddShoppingCartIcon } from "@mui/icons-material";
+import UpdateProduct from "../Update/UpdateProduct";
 
 function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
-  const handleUpdate = (productId) => {
-    // Implement update logic
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const handleUpdate = (product) => {
+    setData(product);
+    setOpen(true);
   };
 
   const handleDelete = (productId) => {
@@ -59,7 +67,7 @@ function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
                   <div>
                     <IconButton
                       sx={{ color: "#222656" }}
-                      onClick={() => handleUpdate(product.id)}
+                      onClick={() => handleUpdate(product)}
                     >
                       <EditIcon />
                     </IconButton>
@@ -77,6 +85,15 @@ function CardView({ products, updateProducts, copyFullProducts, onAddCart }) {
         </>
       ) : (
         <Typography variant="h6">No Results Found</Typography>
+      )}
+      {open && (
+        <UpdateProduct
+          copyFullProducts={copyFullProducts}
+          open={open}
+          onClose={onClose}
+          data={data}
+          updateProducts={updateProducts}
+        />
       )}
     </div>
   );
