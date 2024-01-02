@@ -16,10 +16,21 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
+import UpdateProduct from "../Update/UpdateProduct";
+
 function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
-  const handleUpdate = (productId) => {
-    // Implement update logic
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+
+  const onClose = () => {
+    setOpen(false);
   };
+
+  const handleUpdate = (product) => {
+    setData(product);
+    setOpen(true);
+  };
+
 
   const handleDelete = (productId) => {
     // Implement delete logic
@@ -83,7 +94,7 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
               </TableHead>
               <TableBody>
                 {products &&
-                  products.map((card, index) => (
+                  products.map((product, index) => (
                     <TableRow
                       key={index}
                       sx={{
@@ -103,7 +114,7 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                           },
                         }}
                       >
-                        {card.name}
+                        {product.name}
                       </TableCell>
                       <TableCell
                         align="left"
@@ -115,7 +126,7 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                           },
                         }}
                       >
-                        {card.price}JD
+                        {product.price}JD
                       </TableCell>
                       <TableCell
                         align="left"
@@ -127,7 +138,7 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                           },
                         }}
                       >
-                        {card.stockQuantity}
+                        {product.stockQuantity}
                       </TableCell>
 
                       <TableCell
@@ -168,7 +179,7 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                       >
                         <IconButton
                           sx={{ color: "#222656" }}
-                          onClick={() => handleUpdate(product.id)}
+                          onClick={() => handleUpdate(product)}
                         >
                           <EditIcon />
                         </IconButton>
@@ -202,6 +213,15 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
           <Typography variant="h6">No Results Found</Typography>
         )}
       </Grid>
+      {open && (
+        <UpdateProduct
+          copyFullProducts={copyFullProducts}
+          open={open}
+          onClose={onClose}
+          data={data}
+          updateProducts={updateProducts}
+        />
+      )}
     </Box>
   );
 }
