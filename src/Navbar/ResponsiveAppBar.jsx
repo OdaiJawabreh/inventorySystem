@@ -69,17 +69,17 @@ function ResponsiveAppBar() {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  const clickOnItem = (item) => {
+  const clickOnItem = async (item) => {
     setAnchorElUser(null);
     if (item === "My Transaction") {
       router.push('/transactions')
     } else if (item === "Log out") {
-      const confirm =  Swal.fire({
+      const confirm = await Swal.fire({
         title: `Are you sure you Want to Log out?`,
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
-      });  
+      });
       if (confirm.isConfirmed) { 
         localStorage.removeItem("token")
         router.push('/login')
