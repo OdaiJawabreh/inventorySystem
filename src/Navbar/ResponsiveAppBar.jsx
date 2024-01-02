@@ -117,7 +117,7 @@ function ResponsiveAppBar() {
               onClick={()=>{router.push("/")}}
               src="https://media.licdn.com/dms/image/D4D0BAQG5G2eWQn4Ybg/company-logo_200_200/0/1681635517512/nardpos_logo?e=2147483647&v=beta&t=-RK4XaNrylazkgh0w1jAZLpZTrGbj_KI4LL-xcCv0N4"// Replace with the actual path to your logo
               alt="Logo"
-              style={{ width: '70px', height: '70px', cursor:"pointer" }} // Adjust the width and margin as needed
+              style={{ width: '70px', height: '80px', cursor:"pointer" }} // Adjust the width and margin as needed
             />
               </CenteredLogoContainer>
 

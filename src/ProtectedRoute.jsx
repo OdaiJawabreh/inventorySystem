@@ -72,7 +72,7 @@ const ProtectedRoute = ({ children, checkedRole }) => {
     <div className={style.app_container}>
       <AppAndDrawer />
       <Container maxWidth={isSmallScreen ? "lg" : "xl"}>
-        <Box className={isSmallScreen ? style.container_padding : ""} sx={{ marginTop: "70px" }}>
+        <Box className={isSmallScreen ? style.container_padding : ""} sx={{ marginTop: "100px" }}>
           {setseePage ? children : <h1>You don't have access to see this page</h1>}
         </Box>
       </Container>
