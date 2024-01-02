@@ -3,8 +3,8 @@ import { requestBuilder } from "../Util/api";
 const getProducts = async ({ name, minPrice, maxPrice }) => {
   try {
     const queryName = name ? `?name=${name}` : "";
-    const queryMinPrice = minPrice ? `?minPrice=${minPrice}` : "";
-    const queryMazPrice = name ? `?maxPrice=${maxPrice}` : "";
+    const queryMinPrice = minPrice &&  name ? `&minPrice=${minPrice}` : minPrice &&  !name ? `?minPrice=${minPrice}` :"";
+    const queryMazPrice = maxPrice && (name|| minPrice) ? `&maxPrice=${maxPrice}` : maxPrice && !name && minPrice ? `?minPrice=${maxPrice}`: "";
 
     const path = `product${queryName + queryMinPrice + queryMazPrice}`;
     const { data } = await requestBuilder({

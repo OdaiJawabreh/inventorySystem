@@ -23,8 +23,8 @@ function Product() {
     // ======================== methods =======================
     const finProducts = async () => {
       const response = await getProducts({...filter});
-      setProducts(response.slice(1 - page, 1 - page + 9));
-      setPages(Math.ceil(response.length / 9));
+      setProducts(response.slice(1 - page, 1 - page + 8));
+      setPages(Math.ceil(response.length / 8));
       setCopyProducts(response);
     };
     const changeFlagView = (value) => {
@@ -35,32 +35,34 @@ function Product() {
     };
     const changeFilterValue = async  () => {
       const response = await getProducts({...filter});
-      setProducts(response.slice(0, 9));
-      setPages(Math.ceil(response.length / 9));
+      setProducts(response.slice(0, 8));
+      setPages(Math.ceil(response.length / 8));
     };
     const resetSearch= () =>{
+      console.log("copyFullProducts", copyFullProducts.length);
       setProducts([...copyFullProducts])
-      setPages(Math.ceil(copyFullProducts.length / 9));
+      setPages(Math.ceil(copyFullProducts.length / 8));
       setPage(1)
     }
     const isCardView = () => {
       return viewFlag === "card";
     };
+    
     const updateProducts = (users) => {
-      if (users.length / 9 > pages) {
-        setPages(Math.ceil(users.length / 9));
+      if (users.length / 8 > pages) {
+        setPages(Math.ceil(users.length / 8));
       }
-      setCopyFullUsers(users);
+      setCopyProducts(users);
       let n = page - 1;
-      n = n * 9;
-      setUsers(users.slice(n, n + 9));
+      n = n * 8;
+      setProducts(users.slice(n, n + 8));
     };
     const changePage = (currentPage) => {
       const filteredData = changeFilterValue();
       setPage(currentPage);
       let n = currentPage - 1;
-      n = n * 9;
-      setProducts(filteredData.slice(n, n + 9));
+      n = n * 8;
+      setProducts(filteredData.slice(n, n + 8));
     };
       //============================ use Effect =================
 
@@ -82,6 +84,14 @@ function Product() {
         <Grid item xs={12}>
           <Filter resetSearchFilter={resetSearch} changeFilterValue={changeFilterValue} changeFlagView={changeFlagView} viewFlag={viewFlag} filter={filter} changeFilter={changeFilter} />
         </Grid>
+
+        <Grid item xs={12}>
+          {isCardView() ? (
+            <CardView products={products}   updateProducts={updateProducts} copyFullProducts={copyFullProducts} onAddCart={()=>{'added'}}/>
+          ) : (
+            <TableView products={products}   updateProducts={updateProducts} copyFullProducts={copyFullProducts} />
+          )}
+      </Grid>
       </Grid>
 
     </Box>
