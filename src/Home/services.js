@@ -52,9 +52,23 @@ const updateProduct = async ({id,name,price,stockQuantity}) => {
     throw error;
   }
 };
+const deleteProduct = async (id) => {
+  try {
+    const { data } = await requestBuilder({
+      path: `product/${id}`,
+      method: "DELETE",
+      
+    });
+    return data;
+  } catch (error) {
+    console.log("error get deleteProduct ", error.message);
+    throw error;
+  }
+};
 
 module.exports = {
   getProducts,
   createProduct,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };
