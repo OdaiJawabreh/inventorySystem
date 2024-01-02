@@ -11,16 +11,20 @@ import {
   TableRow,
   Paper,
   Button,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateProduct from "../Update/UpdateProduct";
-import {deleteProduct} from "../services"
+import { deleteProduct } from "../services";
 import Swal from "sweetalert2";
+import {  useDispatch } from "react-redux";
+import { setCartItem } from "../../Store/productStore";
 
 function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
 
@@ -33,26 +37,41 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
     setOpen(true);
   };
 
-
   const handleDelete = async (product) => {
     const confirm = await Swal.fire({
       title: `Are you sure to Delete Product ${product.name}?`,
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-    });  
+    });
     if (confirm.isConfirmed) {
       await deleteProduct(product.id);
-      const newProuts = copyFullProducts.filter(el => el.id !== product.id)
-      updateProducts(newProuts)
+      const newProuts = copyFullProducts.filter((el) => el.id !== product.id);
+      updateProducts(newProuts);
     }
   };
 
-  const handleAddToCart = (productId) => {
-    // Implement add to cart logic
+  const handleAddToCart = (product) => {
+    dispatch(setCartItem(product))
+    const updateStock = {
+      ...product,
+      stockQuantity : product.stockQuantity -1 
+    }
+    const products = copyFullProducts.map((el)=>{
+      if(el.id === product.id) return updateStock
+      else return el
+    })
+    updateProducts(products)
   };
   return (
-    <Box sx={{ display:'flex', justifyContent: 'center', marginLeft: "20px", marginTop:"50px"}}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        marginLeft: "20px",
+        marginTop: "50px",
+      }}
+    >
       <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         {products.length ? (
           <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
@@ -172,8 +191,15 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                             borderColor: "#222656",
                           }}
                           variant="outlined"
+                          onClick={() => {
+                            handleAddToCart(product);
+                          }}
+                          disabled={product.stockQuantity < 1}
                         >
-                          <AddShoppingCartIcon /> Add to Cart
+                          <AddShoppingCartIcon />{" "}
+                          {product.stockQuantity < 1
+                            ? "Out Of Stock"
+                            : "Add to Cart"}
                         </Button>
                       </TableCell>
 

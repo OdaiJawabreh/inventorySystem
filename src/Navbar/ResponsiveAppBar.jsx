@@ -10,19 +10,15 @@ import {
   Toolbar,
   Box,
   Typography,
-  IconButton,
   ListItemIcon,
   ListItemButton,
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import PermIdentityRoundedIcon from "@mui/icons-material/PermIdentityRounded";
-import MenuIcon from "@mui/icons-material/Menu";
 import ReceiptLongSharpIcon from "@mui/icons-material/ReceiptLongSharp";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useRouter } from "next/router";
-import Logo from "../../static/nard_1.png"
-import { RotateRight } from "@mui/icons-material";
 const settings = [
   {
     name: "My Transaction",
@@ -33,6 +29,8 @@ const settings = [
     icon: <LogoutTwoToneIcon />,
   },
 ];
+import {  useSelector } from "react-redux";
+
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -59,6 +57,8 @@ const CenteredLogoContainer = styled(Box)({
 });
 
 function ResponsiveAppBar() {
+  const {cartItem} = useSelector((state) => state.productStore);
+
   // ----------------------- State -------------------------
   const [scrolled, setScrolled] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -127,7 +127,7 @@ function ResponsiveAppBar() {
                     color="primary"
                     overlap="circular"
                     anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                    badgeContent={5}
+                    badgeContent={cartItem.length}
                     onClick={()=>{router.push('/cartDetails')}}
                   >
                       <ShoppingCartIcon sx={{color:"green", fontSize: "35px", cursor: "pointer"}} />
