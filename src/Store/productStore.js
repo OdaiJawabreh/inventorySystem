@@ -13,6 +13,13 @@ const productStore = createSlice({
     setCartItem(state, { payload }) {
       state.cartItem = [...state.cartItem, payload];
     },
+    setDeleteFromCart(state,{payload}){
+      const {id,stockQuantity}=payload
+      console.log(id,stockQuantity);
+      state.cartItem = state.cartItem.filter((el)=>{
+        return el.id !== id || el.stockQuantity !== stockQuantity
+      }) 
+    },
     setProduct(state,{payload}){
       state.products = [ ...payload];
 
@@ -25,6 +32,6 @@ const productStore = createSlice({
 });
 
 
-export const { setCartItem,setProduct,setCopyProduct  } = productStore.actions;
+export const { setCartItem,setProduct,setCopyProduct , setDeleteFromCart } = productStore.actions;
 
 export default productStore.reducer;

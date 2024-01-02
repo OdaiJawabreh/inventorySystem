@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Avatar,
   Card,
@@ -17,14 +17,21 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { setDeleteFromCart } from "../Store/productStore";
 
 function Cart() {
+  const dispatch = useDispatch();
   const { cartItem } = useSelector((state) => state.productStore);
- 
-  const onDelete = (id) =>{
-
-  }
+  
+  const onDelete = (product) => {
+    dispatch(setDeleteFromCart(product));
+  };
+  const total = () => {
+    return cartItem.reduce((acc, product) => {
+      const productPrice = parseFloat(product.price);
+      return acc + productPrice;
+    }, 0);
+  };
   return (
     <Box
       sx={{
@@ -39,7 +46,14 @@ function Cart() {
         {/* Left side: Order summary and checkout button */}
         <Grid item xs={12} md={2}></Grid>
         <Grid item xs={12} md={6}>
-          <Typography variant="h2" component="h4" align="center" sx={{color:"darkgren"}}>ssss</Typography>
+          <Typography
+            variant="h4"
+            component="h4"
+            align="center"
+            sx={{ color: "darkgreen" }}
+          >
+            The Items
+          </Typography>
           {cartItem.map((item) => (
             <div key={item.id} style={{}}>
               <Card variant="outlined" sx={{ maxWidth: 600 }}>
@@ -47,10 +61,13 @@ function Cart() {
                   {/* Display cart items (name, price) here */}
                   <Typography>{item.name}</Typography>
                   <Typography>{item.price}JOD</Typography>
-                </CardContent >
-                <IconButton sx={{ color: "#f0564e" }} onClick={() => onDelete(item.id)}>
-        <DeleteIcon />
-      </IconButton>
+                </CardContent>
+                <IconButton
+                  sx={{ color: "#f0564e" }}
+                  onClick={() => onDelete(item)}
+                >
+                  <DeleteIcon />
+                </IconButton>
               </Card>
             </div>
           ))}
@@ -62,7 +79,7 @@ function Cart() {
             <CardContent>
               {/* Display cart items (name, price) here */}
               <Typography>Order Summary</Typography>
-              <Typography>10JD</Typography>
+              <Typography>{total()}JD</Typography>
             </CardContent>
             <CardActions>
               <LoadingButton
@@ -87,7 +104,6 @@ function Cart() {
           </Card>
         </Grid>
         <Grid item xs={12} md={2}></Grid>
-
       </Grid>
     </Box>
   );
