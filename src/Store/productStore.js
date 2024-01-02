@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
- cartItem: []
+ cartItem: [],
+ products:[],
+ copyFullProducts:[]
 };
 
 const productStore = createSlice({
@@ -9,13 +11,20 @@ const productStore = createSlice({
   initialState,
   reducers: {
     setCartItem(state, { payload }) {
-      console.log("payload",payload );
       state.cartItem = [...state.cartItem, payload];
     },
+    setProduct(state,{payload}){
+      state.products = [ ...payload];
+
+    },
+    setCopyProduct(state,{payload}){
+      state.copyFullProducts = [ ...payload];
+
+    }
   },
 });
 
 
-export const { setCartItem,  } = productStore.actions;
+export const { setCartItem,setProduct,setCopyProduct  } = productStore.actions;
 
 export default productStore.reducer;
