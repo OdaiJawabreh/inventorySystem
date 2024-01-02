@@ -21,8 +21,11 @@ import { deleteProduct } from "../services";
 import Swal from "sweetalert2";
 import {  useDispatch } from "react-redux";
 import { setCartItem } from "../../Store/productStore";
+import jwtDecode from 'jwt-decode';
 
 function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
+  const token = localStorage.getItem("token");
+  const {role} = jwtDecode(token);
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -109,18 +112,18 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                   >
                     Add To Cart
                   </TableCell>
-                  <TableCell
+                  {role==='adin'&&<TableCell
                     sx={{ color: "black", fontSize: "18px" }}
                     align="left"
                   >
                     Edit
-                  </TableCell>
-                  <TableCell
+                  </TableCell>}
+                  {role== 'admin'&&<TableCell
                     sx={{ color: "black", fontSize: "18px" }}
                     align="left"
                   >
                     delete
-                  </TableCell>
+                  </TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -203,7 +206,7 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                         </Button>
                       </TableCell>
 
-                      <TableCell
+                      {role === 'admin' && <TableCell
                         sx={{
                           color: "#194569",
                           cursor: "pointer",
@@ -221,9 +224,9 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                         >
                           <EditIcon />
                         </IconButton>
-                      </TableCell>
+                      </TableCell>}
 
-                      <TableCell
+                      {role === 'admin'&&<TableCell
                         sx={{
                           color: "#194569",
                           cursor: "pointer",
@@ -241,7 +244,7 @@ function TableView({ products, updateProducts, copyFullProducts, onAddCart }) {
                         >
                           <DeleteIcon />
                         </IconButton>
-                      </TableCell>
+                      </TableCell>}
                     </TableRow>
                   ))}
               </TableBody>
